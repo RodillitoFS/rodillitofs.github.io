@@ -1786,29 +1786,39 @@ html.is-mobile .app::after {
   content: none;
 }
 
-html.is-mobile body::after {
-  content: "";
+/* En móvil el PDF del topbar se oculta; el logo queda libre */
+html.is-mobile .btn-print--desktop {
+  display: none !important;
+}
+
+html.is-mobile .brand {
+  flex: 1;
+  min-width: 0;
+}
+
+.mobile-print-bar {
+  display: none;
+}
+
+html.is-mobile .mobile-print-bar {
+  display: block;
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  height: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  padding: 0.65rem 0.85rem calc(0.65rem + env(safe-area-inset-bottom, 0px));
   background: var(--topbar);
   border-top: 1px solid var(--line);
   backdrop-filter: blur(12px);
-  z-index: 40;
-  pointer-events: none;
 }
 
-html.is-mobile #btn-print.btn--primary {
-  display: flex;
-  position: fixed;
-  left: 0.85rem;
-  right: 0.85rem;
-  bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
-  z-index: 50;
-  justify-content: center;
-  align-items: center;
+html.is-mobile .mobile-print-bar[hidden] {
+  display: none !important;
+}
+
+html.is-mobile .mobile-print-bar .btn {
+  width: 100%;
   min-height: 48px;
   border-radius: 14px;
   font-size: 1rem;

@@ -64,6 +64,8 @@
     btnAddRest: document.getElementById("btn-add-rest"),
     btnClear: document.getElementById("btn-clear-template"),
     btnPrint: document.getElementById("btn-print"),
+    btnPrintMobile: document.getElementById("btn-print-mobile"),
+    mobilePrintBar: document.getElementById("mobile-print-bar"),
     btnTheme: document.getElementById("btn-theme"),
     themeLabel: document.getElementById("theme-label"),
     tplDate: document.getElementById("tpl-date"),
@@ -688,10 +690,12 @@
     const place = document.getElementById("tpl-place")?.value || "";
     const time = document.getElementById("tpl-time")?.value || "";
     const filename = `rodillito-entreno-${date}.pdf`;
-    const btn = els.btnPrint;
-    const prevLabel = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = "Generando…";
+    const printBtns = [els.btnPrint, els.btnPrintMobile].filter(Boolean);
+    const prevLabel = "Generar PDF";
+    printBtns.forEach((btn) => {
+      btn.disabled = true;
+      btn.textContent = "Generando…";
+    });
 
     try {
       const doc = new JsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
@@ -1019,14 +1023,27 @@
       console.error("PDF error:", err);
       alert("No se pudo generar el PDF: " + (err?.message || "error desconocido"));
     } finally {
-      btn.disabled = false;
-      btn.textContent = prevLabel || "Generar PDF";
+      printBtns.forEach((btn) => {
+        btn.disabled = false;
+        btn.textContent = prevLabel;
+      });
     }
   }
 
-  els.btnPrint.addEventListener("click", () => {
+  els.btnPrint?.addEventListener("click", () => {
     generatePdf();
   });
+  els.btnPrintMobile?.addEventListener("click", () => {
+    generatePdf();
+  });
+
+  function syncMobilePrintBar() {
+    const mobile = document.documentElement.classList.contains("is-mobile");
+    if (els.mobilePrintBar) els.mobilePrintBar.hidden = !mobile;
+  }
+  syncMobilePrintBar();
+  window.addEventListener("resize", syncMobilePrintBar);
+  window.addEventListener("orientationchange", syncMobilePrintBar);
 
   els.btnTheme?.addEventListener("click", () => {
     applyTheme(currentTheme() === "dark" ? "light" : "dark");

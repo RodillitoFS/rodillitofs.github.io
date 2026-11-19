@@ -54,7 +54,7 @@
         <button type="button" class="btn btn--ghost" id="btn-clear-template" title="Vaciar plantilla">
           Vaciar
         </button>
-        <button type="button" class="btn btn--primary" id="btn-print">
+        <button type="button" class="btn btn--primary btn-print--desktop" id="btn-print">
           Generar PDF
         </button>
       </div>
@@ -158,6 +158,13 @@
       <div class="modal__body" id="modal-body"></div>
     </div>
   </dialog>
+
+  <!-- Solo móvil: PDF abajo, no tapa el logo del topbar -->
+  <div class="mobile-print-bar" id="mobile-print-bar" hidden>
+    <button type="button" class="btn btn--primary" id="btn-print-mobile">
+      Generar PDF
+    </button>
+  </div>
 
   <script src="vendor/jspdf.umd.min.js"></script>
   <script src="js/crest-data.js"></script>
