@@ -673,6 +673,7 @@ input {
 .chip--orange { --chip-accent: #f97316; background: rgba(249, 115, 22, 0.18); border-color: rgba(249, 115, 22, 0.5); }
 .chip--white { --chip-accent: #f4f6f8; background: rgba(244, 246, 248, 0.2); border-color: rgba(244, 246, 248, 0.45); }
 .chip--black { --chip-accent: #1a1f29; background: rgba(26, 31, 41, 0.22); border-color: rgba(26, 31, 41, 0.55); }
+.chip--red { --chip-accent: #ef4444; background: rgba(239, 68, 68, 0.18); border-color: rgba(239, 68, 68, 0.5); }
 
 .chip__name {
   display: inline-flex;

@@ -10,6 +10,7 @@
     { id: "orange", label: "Naranja", swatch: "#f97316" },
     { id: "white", label: "Blanco", swatch: "#f4f6f8" },
     { id: "black", label: "Negro", swatch: "#1a1f29" },
+    { id: "red", label: "Rojo", swatch: "#ef4444" },
   ];
 
   let personUid = 1;
@@ -675,6 +676,7 @@
       orange: "#F97316",
       white: "#E8E8E8",
       black: "#1A1F29",
+      red: "#EF4444",
     };
     return map[colorId] || null;
   }
