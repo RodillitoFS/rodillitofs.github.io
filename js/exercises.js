@@ -372,13 +372,24 @@ const EXERCISES = [
 
   // ——— Juego de 5 ———
   {
+    id: "j5-ataque",
+    category: "juego_de_5",
+    title: "Juego de 5",
+    duration: 16,
+    description:
+      "Ataque de 5 en campo rival: 5 vs 4 más portero rival. Sin comodín.",
+    comments: "Buscar superioridad y remate. Rotar roles.",
+    objective: "Hacer gol en el ataque de 5.",
+    animation: "ataque_5",
+  },
+  {
     id: "j5-ataque-comodin",
     category: "juego_de_5",
     title: "Ataque de 5 con comodín",
     duration: 16,
     description:
-      "Ataque 5 vs 4 con un comodín de color distinto en la línea de fondo (fuera del campo): no puede entrar en el campo, pero sí jugar (recibir y dar pase).",
-    comments: "Usar al comodín de fondo para fijar y finalizar.",
+      "Ataque 5 vs 4 en campo rival, con portero rival y un comodín azul en la portería (línea de fondo, fuera del campo): no puede entrar, pero sí recibir y dar pase.",
+    comments: "Usar al comodín de portería para fijar y finalizar.",
     objective: "Hacer gol en superioridad con ayuda del comodín.",
     animation: "ataque_5_comodin",
   },

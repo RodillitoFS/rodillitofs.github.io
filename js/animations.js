@@ -791,30 +791,59 @@ const PitchAnimator = (() => {
     /* ——— Juego de 5 ——— */
     ataque_5_comodin: {
       duration: 4200,
-      // 5vs4 + comodín azul en línea de fondo (fuera de campo)
+      // Campo atacante: 5 vs 4 + portero rival (△ verde) + comodín azul en la portería (fuera)
       attackers: [
-        (t) => ({ x: 0.35 + 0.08 * Math.sin(t * 2), y: 0.5 }),
-        (t) => ({ x: 0.45 + 0.06 * Math.cos(t * 2), y: 0.28 }),
-        (t) => ({ x: 0.45 + 0.06 * Math.sin(t * 1.8), y: 0.72 }),
-        (t) => ({ x: 0.58 + 0.08 * ease(t), y: 0.4 }),
-        (t) => ({ x: 0.58 + 0.08 * ease(t), y: 0.6 }),
+        (t) => ({ x: 0.52 + 0.04 * Math.sin(t * 2), y: 0.5 }),
+        (t) => ({ x: 0.58 + 0.03 * Math.cos(t * 2), y: 0.26 }),
+        (t) => ({ x: 0.58 + 0.03 * Math.sin(t * 1.8), y: 0.74 }),
+        (t) => ({ x: 0.7 + 0.05 * ease(t), y: 0.38 }),
+        (t) => ({ x: 0.7 + 0.05 * ease(t), y: 0.62 }),
       ],
       defenders: [
-        (t) => ({ x: 0.62 + 0.03 * Math.sin(t * 2), y: 0.35 }),
-        (t) => ({ x: 0.65 + 0.03 * Math.cos(t * 2), y: 0.5 }),
-        (t) => ({ x: 0.62 + 0.03 * Math.sin(t * 1.8), y: 0.68 }),
-        (t) => ({ x: 0.75 + 0.02 * Math.sin(t * 2), y: 0.5 }),
+        (t) => ({ x: 0.68 + 0.03 * Math.sin(t * 2), y: 0.32 }),
+        (t) => ({ x: 0.72 + 0.03 * Math.cos(t * 2), y: 0.5 }),
+        (t) => ({ x: 0.68 + 0.03 * Math.sin(t * 1.8), y: 0.68 }),
+        (t) => ({ x: 0.8 + 0.02 * Math.sin(t * 2), y: 0.45 }),
+        // Portero rival (triángulo verde) en la portería
+        (t) => ({ x: 0.9, y: 0.5 + 0.04 * Math.sin(t * 2.2), color: "#2ecc71" }),
       ],
       jokers: [
-        () => ({ x: 0.97, y: 0.5 }), // línea de fondo, fuera del campo
+        // Comodín en la portería / línea de fondo, fuera del campo (centrado)
+        () => ({ x: 0.985, y: 0.5 }),
       ],
       ball: (t, atk) => {
-        const joker = { x: 0.97, y: 0.5 };
+        const joker = { x: 0.985, y: 0.5 };
         if (t < 0.25) return follow(atk[0](t), 0.03);
         if (t < 0.45) return lerp(atk[0](0.25), atk[3](0.45), (t - 0.25) / 0.2);
         if (t < 0.62) return lerp(atk[3](0.45), joker, (t - 0.45) / 0.17);
         if (t < 0.78) return lerp(joker, atk[4](0.78), (t - 0.62) / 0.16);
         return lerp(atk[4](0.78), { x: 0.92, y: 0.55 }, (t - 0.78) / 0.22);
+      },
+      goal: true,
+      goalLeft: true,
+    },
+    ataque_5: {
+      duration: 4200,
+      // Juego de 5 sin comodín: ataque en campo rival, 5 vs 4 + portero rival
+      attackers: [
+        (t) => ({ x: 0.52 + 0.04 * Math.sin(t * 2), y: 0.5 }),
+        (t) => ({ x: 0.58 + 0.03 * Math.cos(t * 2), y: 0.26 }),
+        (t) => ({ x: 0.58 + 0.03 * Math.sin(t * 1.8), y: 0.74 }),
+        (t) => ({ x: 0.7 + 0.06 * ease(t), y: 0.38 }),
+        (t) => ({ x: 0.7 + 0.06 * ease(t), y: 0.62 }),
+      ],
+      defenders: [
+        (t) => ({ x: 0.68 + 0.03 * Math.sin(t * 2), y: 0.32 }),
+        (t) => ({ x: 0.72 + 0.03 * Math.cos(t * 2), y: 0.5 }),
+        (t) => ({ x: 0.68 + 0.03 * Math.sin(t * 1.8), y: 0.68 }),
+        (t) => ({ x: 0.8 + 0.02 * Math.sin(t * 2), y: 0.45 }),
+        (t) => ({ x: 0.9, y: 0.5 + 0.04 * Math.sin(t * 2.2), color: "#2ecc71" }),
+      ],
+      ball: (t, atk) => {
+        if (t < 0.25) return follow(atk[0](t), 0.03);
+        if (t < 0.48) return lerp(atk[0](0.25), atk[1](0.48), (t - 0.25) / 0.23);
+        if (t < 0.7) return lerp(atk[1](0.48), atk[3](0.7), (t - 0.48) / 0.22);
+        return lerp(atk[3](0.7), { x: 0.93, y: 0.45 }, (t - 0.7) / 0.3);
       },
       goal: true,
       goalLeft: true,
@@ -1050,10 +1079,15 @@ const PitchAnimator = (() => {
       { type: "shot", from: [0.48, 0.35], to: [0.08, 0.45] },
     ],
     ataque_5_comodin: [
-      { type: "pass", from: [0.35, 0.5], to: [0.6, 0.4] },
-      { type: "pass", from: [0.6, 0.4], to: [0.97, 0.5] },
-      { type: "pass", from: [0.97, 0.5], to: [0.65, 0.6] },
-      { type: "shot", from: [0.68, 0.6], to: [0.92, 0.55] },
+      { type: "pass", from: [0.52, 0.5], to: [0.7, 0.38] },
+      { type: "pass", from: [0.7, 0.38], to: [0.985, 0.5] },
+      { type: "pass", from: [0.985, 0.5], to: [0.72, 0.62] },
+      { type: "shot", from: [0.75, 0.6], to: [0.92, 0.55] },
+    ],
+    ataque_5: [
+      { type: "pass", from: [0.52, 0.5], to: [0.58, 0.26] },
+      { type: "pass", from: [0.58, 0.26], to: [0.72, 0.38] },
+      { type: "shot", from: [0.75, 0.4], to: [0.93, 0.45] },
     ],
     otros_circulo: [
       { type: "run", from: [0.68, 0.5], to: [0.5, 0.68] },

@@ -943,7 +943,8 @@
               ex.animation === "partido_5v5" ||
               ex.animation === "pedalada" ||
               ex.animation === "sacar_ventaja" ||
-              ex.animation === "ataque_5_comodin";
+              ex.animation === "ataque_5_comodin" ||
+              ex.animation === "ataque_5";
             diagramImg = PitchAnimator.snapshot(ex.animation, 720, 360, {
               fieldMode: block.fieldMode === "half" ? "half" : "full",
               moves: !noMoves,
