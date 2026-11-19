@@ -2,10 +2,13 @@
 <html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Rodillito FS · Constructor de entrenamientos</title>
   <meta name="description" content="Generador interactivo de plantillas de entrenamiento — Rodillito FS" />
   <meta name="color-scheme" content="dark light" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="icon" type="image/png" href="assets/escudo_rodillito.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,6 +20,18 @@
         var t = localStorage.getItem("rodillito-theme");
         if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
       } catch (e) {}
+      function syncMobile() {
+        var ua = /Mobi|Android|iPhone|iPod|iPad|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || "");
+        var coarse = false;
+        try { coarse = window.matchMedia("(pointer: coarse)").matches; } catch (e) {}
+        var narrow = false;
+        try { narrow = window.matchMedia("(max-width: 820px)").matches; } catch (e) {}
+        var mobile = ua || (coarse && narrow);
+        document.documentElement.classList.toggle("is-mobile", !!mobile);
+      }
+      syncMobile();
+      window.addEventListener("resize", syncMobile);
+      window.addEventListener("orientationchange", syncMobile);
     })();
   </script>
 </head>
