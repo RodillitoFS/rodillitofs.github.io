@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rodillito FS · Constructor de entrenamientos</title>
+  <meta name="description" content="Generador interactivo de plantillas de entrenamiento — Rodillito FS" />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="icon" type="image/png" href="assets/escudo_rodillito.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("rodillito-theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <img src="assets/escudo_rodillito.png" alt="Escudo Rodillito" class="brand__crest" />
+        <div class="brand__text">
+          <span class="brand__name">Rodillito FS</span>
+          <span class="brand__tag">Constructor de entrenamientos</span>
+        </div>
+      </div>
+      <div class="topbar__actions">
+        <button type="button" class="btn btn--ghost btn--theme" id="btn-theme" title="Cambiar tema" aria-label="Cambiar tema">
+          <span class="theme-icon theme-icon--sun" aria-hidden="true">☀</span>
+          <span class="theme-icon theme-icon--moon" aria-hidden="true">☾</span>
+          <span class="theme-label" id="theme-label">Claro</span>
+        </button>
+        <button type="button" class="btn btn--ghost" id="btn-clear-template" title="Vaciar plantilla">
+          Vaciar
+        </button>
+        <button type="button" class="btn btn--primary" id="btn-print">
+          Generar PDF
+        </button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <!-- Sidebar categorías -->
+      <aside class="sidebar" aria-label="Grupos de ejercicios">
+        <h2 class="sidebar__title">Grupos</h2>
+        <nav class="category-nav" id="category-nav"></nav>
+      </aside>
+
+      <!-- Catálogo de ejercicios -->
+      <section class="catalog" aria-label="Batería de ejercicios">
+        <div class="catalog__header">
+          <div>
+            <p class="eyebrow" id="catalog-eyebrow">Catálogo</p>
+            <h2 class="catalog__title" id="catalog-title">Selecciona un grupo</h2>
+          </div>
+          <p class="catalog__hint" id="catalog-count"></p>
+        </div>
+        <div class="exercise-grid" id="exercise-grid"></div>
+        <div class="catalog__empty" id="catalog-empty" hidden>
+          <p>Elige un grupo a la izquierda para ver su batería de ejercicios.</p>
+        </div>
+      </section>
+
+      <!-- Plantilla en vivo -->
+      <aside class="template-panel" aria-label="Plantilla del entrenamiento">
+        <div class="template-panel__scroll">
+          <div class="template" id="training-template">
+            <header class="template__header">
+              <img src="assets/escudo_rodillito.png" alt="" class="template__crest" />
+              <div class="template__meta">
+                <h2 class="template__brand">Rodillito FS</h2>
+                <div class="template__fields">
+                  <label>
+                    <span>Fecha</span>
+                    <input type="date" id="tpl-date" />
+                  </label>
+                  <label>
+                    <span>Lugar</span>
+                    <input type="text" id="tpl-place" placeholder="Pista / campo" value="Polideportivo Colegio Los Angeles - Getafe" />
+                  </label>
+                  <label>
+                    <span>Hora</span>
+                    <input type="time" id="tpl-time" value="20:30" />
+                  </label>
+                </div>
+              </div>
+            </header>
+
+            <section class="template__attendance">
+              <div class="section-head">
+                <h3>Asistentes</h3>
+                <button type="button" class="btn btn--tiny" id="btn-add-player">+ Jugador</button>
+              </div>
+              <div class="color-toolbar" id="color-toolbar" aria-label="Color de peto"></div>
+              <p class="attendance-hint" id="color-hint">Elige un color y luego toca los jugadores</p>
+              <div class="roster-group">
+                <h4 class="roster-group__title">Porteros</h4>
+                <div class="player-chips" id="gk-chips"></div>
+              </div>
+              <div class="roster-group">
+                <h4 class="roster-group__title">Jugadores</h4>
+                <div class="player-chips" id="player-chips"></div>
+              </div>
+              <input
+                type="text"
+                id="player-input"
+                class="player-input"
+                placeholder="Nombre y Enter… (jugador de campo)"
+                maxlength="40"
+                hidden
+              />
+            </section>
+
+            <section class="template__blocks">
+              <div class="section-head">
+                <h3>Sesión</h3>
+                <div class="session-tools">
+                  <span class="session-total" id="session-total">0 min</span>
+                  <button type="button" class="btn btn--tiny btn--rest" id="btn-add-rest">+ Descanso</button>
+                </div>
+              </div>
+              <ol class="session-list" id="session-list"></ol>
+              <p class="session-empty" id="session-empty">
+                Aún no hay ejercicios. Explora un grupo e inclúyelos en la plantilla.
+              </p>
+            </section>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- Modal detalle ejercicio -->
+  <dialog class="modal" id="exercise-modal">
+    <div class="modal__inner">
+      <button type="button" class="modal__close" id="modal-close" aria-label="Cerrar">×</button>
+      <div class="modal__body" id="modal-body"></div>
+    </div>
+  </dialog>
+
+  <script src="vendor/jspdf.umd.min.js"></script>
+  <script src="js/crest-data.js"></script>
+  <script src="js/exercises.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
